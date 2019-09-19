@@ -13,3 +13,5 @@ yarn-error.log
 laravel-echo-server.json
 laravel-echo-server.lock
 .idea
+public/css/app.css
+public/js/app.js
