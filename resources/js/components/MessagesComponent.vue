@@ -17,17 +17,18 @@
 
 <script>
     export default {
+        props: ['user'],
 
         data(){
             return {
-                messages: [],
+                messages: []
             }
         },
 
         mounted() {
-            Echo.channel('laravel_database_messages')
+
+            window.Echo.private(`messages.${this.user}`)
                 .listen('.newMessage', (message) => {
-                    console.log(message);
                     this.messages.push(message);
                 });
         }

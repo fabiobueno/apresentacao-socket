@@ -2,6 +2,7 @@
 
 namespace App\Events;
 
+use App\User;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Broadcasting\PrivateChannel;
@@ -15,10 +16,12 @@ class MessagePushed implements ShouldBroadcast
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     protected $message;
+    protected $user;
 
-    public function __construct($message)
+    public function __construct($message, User $user)
     {
         $this->message = $message;
+        $this->user = $user;
     }
 
     //Valor que serão enviados com o evento
@@ -26,6 +29,7 @@ class MessagePushed implements ShouldBroadcast
     {
         return [
             'message' => $this->message,
+            'user' => $this->user,
         ];
     }
 
@@ -38,6 +42,6 @@ class MessagePushed implements ShouldBroadcast
    //Canal que esse evento vai disparar, pode ser publico, privado ou de presença
     public function broadcastOn()
     {
-        return new Channel('messages');
+        return new PrivateChannel('messages.'.$this->user->id);
     }
 }
